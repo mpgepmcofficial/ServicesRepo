@@ -119,6 +119,12 @@ MEDIA_URL = os.getenv("MEDIA_URL", "/media/")
 MEDIA_ROOT = BASE_DIR / os.getenv("MEDIA_ROOT", "media")
 
 
+CSRF_TRUSTED_ORIGINS = [
+    'https://*.github.dev',
+    'https://*.app.github.dev',
+]
+
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
