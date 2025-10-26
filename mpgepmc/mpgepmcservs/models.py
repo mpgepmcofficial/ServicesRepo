@@ -1,5 +1,6 @@
 from django.db import models
 from django.template.defaultfilters import slugify
+from decimal import Decimal # Import Decimal for comparison
 
 # --- Choices ---
 DURATION_UNITS = [
@@ -85,6 +86,11 @@ class Package(models.Model):
         return f"{self.package_type} - {self.service.name}"
     
     def get_display_price(self):
+        """Displays the price range, handling None values for the Admin add form."""
+        if self.min_price_usd is None or self.max_price_usd is None:
+            # Return a string instead of trying to format None
+            return "N/A (Enter Prices)" 
+            
         if self.min_price_usd == self.max_price_usd:
             return f"${self.min_price_usd:,.2f}"
         return f"${self.min_price_usd:,.0f} - ${self.max_price_usd:,.0f}"
