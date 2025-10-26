@@ -1,0 +1,32 @@
+{% extends "mpgepmcservs/base.html" %}
+
+{% block title %}All Service Categories{% endblock %}
+
+{% block content %}
+<h1 class="text-4xl font-extrabold text-gray-900 mb-2">Our Service Catalog</h1>
+<p class="text-lg text-gray-600 mb-12">Browse our professional service categories to find the right solution for your business.</p>
+
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+    {% for class in classes %}
+    <a href="{% url 'service_class_detail' class.slug %}" class="card-hover bg-white p-6 rounded-xl shadow-lg transition duration-300 ease-in-out border-t-4 border-primary-blue hover:shadow-2xl">
+        <div class="flex items-center mb-4">
+            <span class="text-3xl mr-3" role="img" aria-label="Icon">
+                {% if class.name == 'Artificial Intelligence (AI) Services' %}🧠{% elif class.name == 'Machine Learning (ML) Services' %}🤖{% elif class.name == 'Digital Services' %}🌐{% elif class.name == 'Software Development Services' %}💻{% elif class.name == 'Hosting & Cloud Services' %}☁️{% elif class.name == 'Design & Development Services' %}🎨{% elif class.name == 'Cybersecurity Services' %}🔐{% elif class.name == 'IT Infrastructure & Support' %}🧱{% elif class.name == 'Data & Analytics Services' %}📊{% else %}✨{% endif %}
+            </span>
+            <h2 class="text-2xl font-bold text-gray-800">{{ class.name }}</h2>
+        </div>
+        <p class="text-gray-600 mb-4">{{ class.description|default:"Explore comprehensive solutions in this category." }}</p>
+        
+        <div class="mt-4">
+            <span class="inline-flex items-center px-3 py-1 bg-primary-blue/10 text-primary-blue text-sm font-medium rounded-full">
+                {{ class.services.count }} Service{{ class.services.count|pluralize }}
+            </span>
+        </div>
+    </a>
+    {% empty %}
+    <div class="col-span-3 text-center py-12 bg-white rounded-xl shadow-lg">
+        <p class="text-gray-500 italic">No service categories are currently available.</p>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

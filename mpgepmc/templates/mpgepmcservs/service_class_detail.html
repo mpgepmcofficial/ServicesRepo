@@ -1,0 +1,37 @@
+{% extends "mpgepmcservs/base.html" %}
+
+{% block title %}{{ service_class.name }}{% endblock %}
+
+{% block content %}
+<nav class="mb-6 text-sm font-medium text-gray-500" aria-label="Breadcrumb">
+    <ol class="flex space-x-2">
+        <li><a href="{% url 'index' %}" class="hover:text-primary-blue">Home</a></li>
+        <li class="text-gray-400">/</li>
+        <li class="text-primary-blue">{{ service_class.name }}</li>
+    </ol>
+</nav>
+
+<h1 class="text-4xl font-extrabold text-gray-900 mb-4">{{ service_class.name }}</h1>
+<p class="text-xl text-gray-600 mb-12 max-w-3xl">{{ service_class.description }}</p>
+
+<div class="space-y-6">
+    {% for service in services %}
+    <div class="bg-white p-6 rounded-xl shadow-lg flex flex-col md:flex-row justify-between items-start md:items-center">
+        <div class="md:w-3/4">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-2">{{ service.name }}</h2>
+            <p class="text-gray-600">{{ service.short_description }}</p>
+        </div>
+        <div class="md:w-1/4 mt-4 md:mt-0 md:text-right">
+            <a href="{% url 'service_detail' service_class.slug service.slug %}" class="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-full shadow-sm text-white bg-primary-blue hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-blue transition duration-150">
+                View Packages
+                <svg class="ml-2 -mr-1 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
+            </a>
+        </div>
+    </div>
+    {% empty %}
+    <div class="text-center py-12 bg-white rounded-xl shadow-lg">
+        <p class="text-gray-500 italic">No individual services found in this category.</p>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

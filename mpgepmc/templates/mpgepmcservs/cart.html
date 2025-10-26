@@ -1,0 +1,83 @@
+{% extends "mpgepmcservs/base.html" %}
+
+{% block title %}Your Cart{% endblock %}
+
+{% block content %}
+<h1 class="text-4xl font-extrabold text-gray-900 mb-8 border-b pb-4">Your Shopping Cart</h1>
+
+{% if cart_items %}
+<div class="lg:grid lg:grid-cols-3 lg:gap-8">
+    
+    <!-- Cart Items List (2/3 width) -->
+    <div class="lg:col-span-2 space-y-4">
+        {% for item in cart_items %}
+        <div class="bg-white p-6 rounded-xl shadow-lg flex items-center justify-between">
+            <div class="flex items-center">
+                <span class="text-3xl mr-4 text-primary-blue">📦</span>
+                <div>
+                    <p class="text-lg font-semibold text-gray-800">{{ item.package.package_type }} ({{ item.package.service.name }})</p>
+                    <p class="text-sm text-gray-500">{{ item.package.description|truncatechars:50 }}</p>
+                </div>
+            </div>
+            
+            <div class="flex items-center space-x-6">
+                <div class="text-right">
+                    <p class="text-lg font-bold text-gray-900">
+                        {% if item.package.min_price_usd == item.package.max_price_usd %}
+                            ${{ item.line_min_total|floatformat:2 }}
+                        {% else %}
+                            ${{ item.line_min_total|floatformat:0 }} - ${{ item.line_max_total|floatformat:0 }}
+                        {% endif %}
+                    </p>
+                    <p class="text-xs text-gray-400">Duration: {{ item.package.duration_value }}</p>
+                </div>
+                
+                <a href="{% url 'remove_from_cart' item.package.id %}" class="text-red-500 hover:text-red-700 p-2 rounded-full hover:bg-red-50 transition duration-150" aria-label="Remove item">
+                    <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                </a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Order Summary (1/3 width) -->
+    <div class="lg:col-span-1 mt-8 lg:mt-0">
+        <div class="bg-white p-6 rounded-xl shadow-xl sticky top-24">
+            <h2 class="text-2xl font-bold text-gray-900 mb-6 border-b pb-3">Order Summary</h2>
+            
+            <div class="space-y-4 mb-6">
+                <div class="flex justify-between text-gray-600">
+                    <span>Items Total (Min)</span>
+                    <span class="font-medium">${{ min_total|floatformat:2 }}</span>
+                </div>
+                <div class="flex justify-between text-gray-600">
+                    <span>Items Total (Max)</span>
+                    <span class="font-medium">${{ max_total|floatformat:2 }}</span>
+                </div>
+            </div>
+            
+            <div class="flex justify-between text-2xl font-bold text-gray-900 border-t pt-4">
+                <span>Estimated Total</span>
+                <span>${{ max_total|floatformat:0 }}</span>
+            </div>
+
+            <a href="{% url 'payment_page' %}" class="mt-8 w-full flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-lg shadow-md text-white bg-primary-blue hover:bg-blue-700 transition duration-150">
+                Proceed to Checkout
+            </a>
+            
+            <a href="{% url 'index' %}" class="mt-4 w-full block text-center text-sm text-gray-500 hover:text-primary-blue transition duration-150">
+                Continue Shopping
+            </a>
+        </div>
+    </div>
+</div>
+{% else %}
+<div class="text-center py-20 bg-white rounded-xl shadow-lg">
+    <span class="text-6xl mb-4 block">🛒</span>
+    <p class="text-xl text-gray-600 mb-6">Your cart is currently empty.</p>
+    <a href="{% url 'index' %}" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-lg shadow-sm text-white bg-primary-blue hover:bg-blue-700 transition duration-150">
+        Start Browsing Services
+    </a>
+</div>
+{% endif %}
+{% endblock %}
