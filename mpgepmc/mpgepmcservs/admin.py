@@ -39,13 +39,14 @@ class ServiceInline(admin.TabularInline):
 class ServiceClassAdmin(admin.ModelAdmin):
     list_display = ('name', 'order', 'slug')
     inlines = [ServiceInline]
-    prepopulated_fields = {'slug': ('name',)}
+    # FIX: Removed prepopulated_fields as slug is auto-generated in the model's save() method 
+    # and is set as editable=False, which conflicts with prepopulated_fields.
 
 @admin.register(Service)
 class ServiceAdmin(admin.ModelAdmin):
     list_display = ('name', 'service_class', 'short_description')
     list_filter = ('service_class',)
-    prepopulated_fields = {'slug': ('name',)}
+    # FIX: Removed prepopulated_fields as slug is auto-generated in the model's save() method.
     inlines = [PackageInline]
 
 # --- Other Models ---
