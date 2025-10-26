@@ -10,7 +10,7 @@ load_dotenv(BASE_DIR / ".envfp")
 # SECURITY
 SECRET_KEY = os.getenv("SECRET_KEY")
 DEBUG = os.getenv("DEBUG", "False") == "True"
-ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "127.0.0.1,localhost").split(",")
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "127.0.0.1,localhost,example.com").split(",")
 
 # APPLICATIONS
 
@@ -119,10 +119,30 @@ MEDIA_URL = os.getenv("MEDIA_URL", "/media/")
 MEDIA_ROOT = BASE_DIR / os.getenv("MEDIA_ROOT", "media")
 
 
+
 CSRF_TRUSTED_ORIGINS = [
     'https://*.github.dev',
     'https://*.app.github.dev',
+
+    # Local development (use scheme + port if you use non-default port)
+    'http://127.0.0.1:8000',
+    'http://localhost:8000',
+
+    # Production/example (replace with your real domain)
+    'https://example.com',
+    'https://www.example.com',
 ]
+
+
+# If you are behind a proxy/SSL-terminator (nginx, load balancer), enable:
+# SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+# If you serve via HTTPS, consider enabling secure cookies:
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+
+
+
 
 
 # Default primary key field type
