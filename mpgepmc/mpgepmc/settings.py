@@ -127,6 +127,9 @@ CSRF_TRUSTED_ORIGINS = [
     # Local development (use scheme + port if you use non-default port)
     'http://127.0.0.1:8000',
     'http://localhost:8000',
+    # Add HTTPS origins if you access the site via https://localhost:8000 etc.
+    'https://127.0.0.1:8000',
+    'https://localhost:8000',
 
     # Production/example (replace with your real domain)
     'https://example.com',
@@ -138,8 +141,10 @@ CSRF_TRUSTED_ORIGINS = [
 # SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # If you serve via HTTPS, consider enabling secure cookies:
-CSRF_COOKIE_SECURE = True
-SESSION_COOKIE_SECURE = True
+# Make secure-cookie flags conditional so development on HTTP still works.
+CSRF_COOKIE_SECURE = not DEBUG
+SESSION_COOKIE_SECURE = not DEBUG
+
 
 
 
